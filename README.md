@@ -1,7 +1,7 @@
 # ae-waiting-times
 which health boards are failing to meet the 4-hour A&E standard, is it getting better or worse, and which boards need attention now, before it shows up in the next quarterly report.
 
-###notes (draft)
+### notes (draft)
 - **Duplicate record found**: one exact duplicate in the source data — board `S08000031`, May 2015, treatment location `G405H`, Type 1 — appeared twice (both `All` and `Unplanned` attendance categories). Removed via a window-function dedup (`ROW_NUMBER()` partitioned by the full row-identity columns, keeping the lowest `id`). Confirmed genuine duplicate, not a repeated-insert artifact, since it was isolated to a single row rather than affecting the whole table.
 
 - **Null pattern in episode-level columns**: all five episode metric columns (`attendances_episode`, `within_4hrs_episode`, `over_8hrs_episode`, `over_12hrs_episode`, `pct_within_4hrs_episode`) are null on exactly the same rows every time — 16,894 of 39,581 total rows (42.7%). Confirms nulls aren't scattered/random — they represent whole rows with no episode-level submission at all, not individual missing fields.
